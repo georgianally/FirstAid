@@ -27,7 +27,7 @@ import java.util.Observer;
 public class RecordVoiceActivity extends AppCompatActivity implements Observer {
 
     private TextView promptText;
-    private TextView speechToTextView;
+    private TextView speechToEditText;
     private Button switchViewButton;
 
     private ConstraintLayout guideLayout;
@@ -84,7 +84,7 @@ public class RecordVoiceActivity extends AppCompatActivity implements Observer {
         start = getCurrentTime();
 
         promptText = findViewById(R.id.promptText);
-        speechToTextView = findViewById(R.id.speechToTextView);
+        speechToEditText = findViewById(R.id.speechToEditText);
         Button choice1Button = findViewById(R.id.choice1Button);
         Button choice2Button = findViewById(R.id.choice2Button);
         Button skipButton = findViewById(R.id.skipButton);
@@ -118,12 +118,12 @@ public class RecordVoiceActivity extends AppCompatActivity implements Observer {
         choice2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                storeQuestionData(promptText.getText().toString(), speechToTextView.getText().toString());
+                storeQuestionData(promptText.getText().toString(), speechToEditText.getText().toString());
                 if(promptNum < prompts.length - 1) {
                     promptNum++;
                     promptText.setText(prompts[promptNum]);
                     start = getCurrentTime();
-                    speechToTextView.setText("Speech to text translation:");
+                    speechToEditText.setText("Speech to text translation:");
                 }
                 else{
                     startReportActivity();
@@ -161,7 +161,7 @@ public class RecordVoiceActivity extends AppCompatActivity implements Observer {
             case REQ_CODE_SPEECH_INPUT: {
                 if (resultCode == RESULT_OK && null != data) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    speechToTextView.setText(result.get(0));
+                    speechToEditText.setText(result.get(0));
                 }
                 break;
             }
