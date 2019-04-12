@@ -55,7 +55,7 @@
                 android:layout_marginRight="25dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/btn_rounded_green"
-                android:text="Start Recording"
+                android:text="Voice Input"
                 android:textColor="@color/buttonTextColour"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toTopOf="@+id/choice2Button"
@@ -71,10 +71,12 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginRight="25dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="Name"
                 android:textColor="@android:color/black"
                 android:textSize="36sp"
+                app:layout_constraintBottom_toTopOf="@+id/speechToEditText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -119,17 +121,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginLeft="25dp"
-                android:layout_marginTop="32dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginRight="25dp"
                 android:layout_marginBottom="16dp"
                 android:gravity="left"
+                android:hint="Speech to text translation:"
                 android:inputType="none|text"
-                android:text="Speech to text translation:"
                 app:layout_constraintBottom_toTopOf="@+id/choice1Button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/promptText" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.firstaid.R;
@@ -34,6 +35,7 @@ public class FirstAidActivity extends AppCompatActivity implements Observer {
     private Button choice1Button;
     private Button choice2Button;
     private Button switchViewButton;
+    private ProgressBar progressBar;
 
     private ConstraintLayout guideLayout;
     private ConstraintLayout reportLayout;
@@ -85,6 +87,7 @@ public class FirstAidActivity extends AppCompatActivity implements Observer {
         switchViewButton = findViewById(R.id.switchViewButton);
         guideLayout = findViewById(R.id.guideLayout);
         reportLayout = findViewById(R.id.reportLayout);
+        progressBar = findViewById(R.id.progressBar);
 
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +120,14 @@ public class FirstAidActivity extends AppCompatActivity implements Observer {
         reportSetup();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(progressBar.getVisibility() == View.VISIBLE){
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
     private void startQuickCallActivity() {
         Intent intent = new Intent(FirstAidActivity.this, QuickCallActivity.class);
         startActivity(intent);
@@ -138,12 +149,14 @@ public class FirstAidActivity extends AppCompatActivity implements Observer {
 
     private void checkPageNumber(int pageNumber, Page page) {
         if(pageNumber == 5){
+            progressBar.setVisibility(View.VISIBLE);
             startTimer();
         }
         else if(pageNumber == 8){
             Date currentTime = Calendar.getInstance().getTime();
             report.setFinish(currentTime.toString());
             startReportActivity();
+            progressBar.setVisibility(View.VISIBLE);
         }
         else if (page.isSingleButton() && pageNumber != 7) {
             singlePageUI();

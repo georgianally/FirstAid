@@ -6,7 +6,7 @@
     <string name="page0_choice1">Yes</string>
     <string name="page0_choice2">No</string>
 
-    <string name="page1">Remove Danger?"</string>
+    <string name="page1">Removable Danger?"</string>
     <string name="page1_choice1">Yes</string>
     <string name="page1_choice2">No - Call 999</string>
 
@@ -14,18 +14,18 @@
     <string name="page2_choice1">Yes</string>
     <string name="page2_choice2">No</string>
 
-    <string name="page3">Indirect Pressure and Tourniquet"</string>
+    <string name="page3">Apply Indirect Pressure and Tourniquet"</string>
 
     <string name="page4">Are they Responsive?"</string>
     <string name="page4_choice1">Yes</string>
     <string name="page4_choice2">No</string>
 
 
-    <string name="page5">Check Breathing Page"</string>
+    <string name="page5">Loading Timer"</string>
 
     <string name="page6">Get Help / Start CPR"</string>
 
-    <string name="page7">Head-Toe %s Check"</string>
+    <string name="page7">Head to Toe Exam: \n %s Check"</string>
 
     <string name="page8">Loading Report"</string>
 

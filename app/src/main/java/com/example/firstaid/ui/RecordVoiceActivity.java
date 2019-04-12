@@ -123,7 +123,7 @@ public class RecordVoiceActivity extends AppCompatActivity implements Observer {
                     promptNum++;
                     promptText.setText(prompts[promptNum]);
                     start = getCurrentTime();
-                    speechToEditText.setText("Speech to text translation:");
+                    speechToEditText.setText("");
                 }
                 else{
                     startReportActivity();
