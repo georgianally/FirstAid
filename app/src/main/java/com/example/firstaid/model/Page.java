@@ -1,7 +1,7 @@
 package com.example.firstaid.model;
 
 public class Page {
-    private int textId;
+    private final int textId;
     private Choice choice1;
     private Choice choice2;
     private boolean singleButton = false;

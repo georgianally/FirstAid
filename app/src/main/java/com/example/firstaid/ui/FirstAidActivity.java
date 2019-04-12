@@ -2,80 +2,145 @@ package com.example.firstaid.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.firstaid.R;
-import com.example.firstaid.model.DBHelper;
+import com.example.firstaid.model.Header;
 import com.example.firstaid.model.Page;
 import com.example.firstaid.model.Protocol;
 import com.example.firstaid.model.Report;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Stack;
 
-public class FirstAidActivity extends AppCompatActivity {
-
+public class FirstAidActivity extends AppCompatActivity implements Observer {
 
     //Sets up custom back button
-    private Stack<Integer> pageStack = new Stack<Integer>();
+    private final Stack<Integer> pageStack = new Stack<>();
     //Set up views
     private Protocol protocol;
     private TextView promptText;
     private Button choice1Button;
     private Button choice2Button;
+    private Button switchViewButton;
+
+    private ConstraintLayout guideLayout;
+    private ConstraintLayout reportLayout;
+
+    private ArrayAdapter<String> adapter;
 
     private int nextPage;
     private int currentPage;
     private boolean responsive = false;
-    Report report;
+    private static Report report;
+
+    private String start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_aid);
 
+        Header header = findViewById(R.id.headerlayout);
+        header.initHeader();
+
+        header.callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startQuickCallActivity();
+            }
+        });
+
+        header.logoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FirstAidActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Bundle bundle = getIntent().getExtras();
+        String address = bundle.getString("Address");
+
         Date currentTime = Calendar.getInstance().getTime();
-        report = new  Report(currentTime.toString());
+        report = new Report(currentTime.toString(), address);
+        report.addObserver(this);
 
         //Initialise Views
-        promptText = (TextView) findViewById(R.id.promptText);
-        choice1Button = (Button) findViewById(R.id.choice1Button);
-        choice2Button = (Button) findViewById(R.id.choice2Button);
-        Button skipButton = (Button) findViewById(R.id.skipButton);
+        promptText = findViewById(R.id.promptText);
+        choice1Button = findViewById(R.id.choice1Button);
+        choice2Button = findViewById(R.id.choice2Button);
+        Button skipButton = findViewById(R.id.skipButton);
+        switchViewButton = findViewById(R.id.switchViewButton);
+        guideLayout = findViewById(R.id.guideLayout);
+        reportLayout = findViewById(R.id.reportLayout);
 
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadPage(currentPage+1);
+                storeQuestionData("Skip");
+            }
+        });
+
+        switchViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(reportLayout.getVisibility() == View.GONE){
+                    reportLayout.setVisibility(View.VISIBLE);
+                    guideLayout.setVisibility(View.GONE);
+                    switchViewButton.setText("View Guide");
+                }
+                else if(guideLayout.getVisibility() == View.GONE){
+                    guideLayout.setVisibility(View.VISIBLE);
+                    reportLayout.setVisibility(View.GONE);
+                    switchViewButton.setText("View Report");
+                }
             }
         });
 
         protocol = new Protocol();
         loadPage(0);
 
+        //***** Report section
+        reportSetup();
     }
 
-    private void loadPage(int pageNumber) {
+    private void startQuickCallActivity() {
+        Intent intent = new Intent(FirstAidActivity.this, QuickCallActivity.class);
+        startActivity(intent);
+    }
+
+    private void loadPage(final int pageNumber) {
+        start = getCurrentTime();
         //Add page number to stack (custom back button)
-        Log.i("My Activity", report.getSafe() + "   " +report.getResponsive() + "   " + report.getDanger());
         pageStack.push(pageNumber);
 
         currentPage = pageNumber;
         final Page page = protocol.getPage(pageNumber);
 
+        checkPageNumber(pageNumber, page);
+
         String pageText = getString(page.getTextId());
         promptText.setText(pageText);
+    }
 
-
-        //If only one button
-        if(pageNumber == 8){
+    private void checkPageNumber(int pageNumber, Page page) {
+        if(pageNumber == 5){
+            startTimer();
+        }
+        else if(pageNumber == 8){
             Date currentTime = Calendar.getInstance().getTime();
             report.setFinish(currentTime.toString());
             startReportActivity();
@@ -85,22 +150,16 @@ public class FirstAidActivity extends AppCompatActivity {
             choice2Button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view){
-                    startTimer();
+                    loadPage(4);
                 }
             });
         }
-        else if (page.isSingleButton()) {
+        else if (page.isSingleButton()) { //If only one button
             singlePageUI();
             headCheckPageUI(page);
         } else { //else set up page as normal
             loadButtons(page, pageNumber);
         }
-    }
-
-    private void startReportActivity() {
-        Intent intent = new Intent(this, ReportActivity.class);
-        intent.putExtra("Report", report);
-        startActivity(intent);
     }
 
     private void loadButtons(final Page page, final int pageNumber) {
@@ -110,25 +169,8 @@ public class FirstAidActivity extends AppCompatActivity {
         choice1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch(pageNumber){
-                    case 0:
-                        report.setSafe("Yes");
-                        break;
-                    case 1:
-                        report.setDanger("Yes");
-                        break;
-                    case 2:
-                        report.setBleed("Yes");
-                        break;
-                    case 3:
-                        report.setResponsive("Yes");
-                        break;
-                    case 6:
-                        report.setCpr("Yes");
-                        break;
-                }
-
-                if (page.getChoice1().getNextPage() == 4) {
+                storeQuestionData(choice1Button.getText().toString());
+                if (page.getChoice1().getNextPage() == 5) {
                     responsive = true;
                 }
                 nextPage = page.getChoice1().getNextPage();
@@ -141,32 +183,40 @@ public class FirstAidActivity extends AppCompatActivity {
         choice2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch(pageNumber){
-                    case 0:
-                        report.setSafe("No");
-                        break;
-                    case 1:
-                        report.setDanger("No - Call 999");
-                        break;
-                    case 2:
-                        report.setBleed("No");
-                        break;
-                    case 3:
-                        report.setResponsive("No");
-                        break;
+                if(pageNumber == 1){
+                    storeQuestionData(choice2Button.getText().toString());
+                    startQuickCallActivity();
                 }
-
-                nextPage = page.getChoice2().getNextPage();
-                loadPage(nextPage);
+                else {
+                    storeQuestionData(choice2Button.getText().toString());
+                    nextPage = page.getChoice2().getNextPage();
+                    loadPage(nextPage);
+                }
             }
         });
     }
 
+    private void storeQuestionData(String answer) {
+        String question = promptText.getText().toString();
+        String finish = getCurrentTime();
+        report.addQuestionData("Question: " + question, "Answer: " + answer, "Start: " + start, "Finish: " + finish);
+    }
+
+    private void storeQuestionData(String question, String answer) {
+        String finish = getCurrentTime();
+        report.addQuestionData("Question: " + question, "Answer: " + answer, "Start: " + start, "Finish: " + finish);
+    }
+
     private void startTimer() {
-        report.setCpr("Yes");
         Intent intent = new Intent(this, TimerActivity.class);
         intent.putExtra("isResponsive", responsive);
         startActivityForResult(intent, 1);
+    }
+
+    private void startReportActivity() {
+        Intent intent = new Intent(this, ReportActivity.class);
+        intent.putExtra("Report", report);
+        startActivity(intent);
     }
 
     private void singlePageUI() {
@@ -177,8 +227,7 @@ public class FirstAidActivity extends AppCompatActivity {
     //Refactor and simplify? Looping page 7 UI
     private void headCheckPageUI(final Page page) {
         final String[] headToeCheck = {"Head", "Body", "Upper Legs", "Lower Legs", "Arms"};
-        promptText.setText(getString(page.getTextId(), headToeCheck[0]));
-        final int[] i = {1};
+        final int[] i = {-1};
 
         //When click done - display next word in array
         choice2Button.setOnClickListener(new View.OnClickListener() {
@@ -197,9 +246,21 @@ public class FirstAidActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             int page = data.getIntExtra("page", 0);
-            loadPage(page);
+            if(page == 9){
+                String question = data.getStringExtra("question");
+                String answer = data.getStringExtra("answer");
+                storeQuestionData(question, answer);
+                //Start record voice activity
+                Intent intent = new Intent(this, RecordVoiceActivity.class);
+                intent.putExtra("Report", report);
+                startActivity(intent);
+            }
+            else {
+                loadPage(page);
+            }
         }
     }
 
@@ -214,5 +275,34 @@ public class FirstAidActivity extends AppCompatActivity {
         else {
             loadPage(pageStack.pop());
         }
+    }
+
+    private String getCurrentTime(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        return dateFormat.format(calendar.getTime());
+    }
+
+    //Report Section
+
+    private void reportSetup() {
+        //Report
+        TextView startTextView = findViewById(R.id.startTextView);
+        TextView locationTextView = findViewById(R.id.locationTextView);
+        ListView questionDataListView = findViewById(R.id.questionDataListView);
+
+        startTextView.setText(startTextView.getText() + report.getStart());
+        locationTextView.setText(locationTextView.getText() + report.getLocation());
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        questionDataListView.setAdapter(adapter);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Report reportNew = (Report) o;
+        int size = reportNew.getQuestion().size()-1;
+        adapter.add(reportNew.getQuestion().get(size) + "\n" + reportNew.getAnswer().get(size) + "\n" + reportNew.getqStart().get(size) + "\n" + reportNew.getqFinish().get(size) + "\n");
+        adapter.notifyDataSetChanged();
     }
 }

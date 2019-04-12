@@ -14,27 +14,21 @@
     <string name="page2_choice1">Yes</string>
     <string name="page2_choice2">No</string>
 
-    <string name="page3">Are they Responsive?"</string>
-    <string name="page3_choice1">Yes</string>
-    <string name="page3_choice2">No</string>
+    <string name="page3">Indirect Pressure and Tourniquet"</string>
 
-    <string name="page4">Indirect Pressure and Tourniquet"</string>
+    <string name="page4">Are they Responsive?"</string>
+    <string name="page4_choice1">Yes</string>
+    <string name="page4_choice2">No</string>
 
-    <string name="page5">Indirect Pressure, Tourniquet and Head Tilt/Jaw Thurst"</string>
+
+    <string name="page5">Check Breathing Page"</string>
 
     <string name="page6">Get Help / Start CPR"</string>
 
     <string name="page7">Head-Toe %s Check"</string>
 
-    <string name="page8">Display Report"</string>
-
-    <string name="page9">Start Recording"</string>
-    <string name="page9_choice1">RECORD</string>
-    <string name="page9_choice2">STOP RECORD</string>
-
-    <string name="page">"</string>
-    <string name="page_choice1">Yes</string>
-    <string name="page_choice2">No</string>
+    <string name="page8">Loading Report"</string>
 
     <string name="done_button_text">Done</string>
+    <string name="title_activity_quick_call">Map</string>
 </resources>

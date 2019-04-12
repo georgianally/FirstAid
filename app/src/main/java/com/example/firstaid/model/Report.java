@@ -3,27 +3,44 @@ package com.example.firstaid.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Report implements Parcelable {
-    private String start;
+import java.util.ArrayList;
+import java.util.Observable;
+
+public class Report extends Observable implements Parcelable {
+    private final String start;
     private String finish;
     private String location;
-    private String safe;
-    private String danger;
-    private String responsive;
-    private String bleed;
-    private String cpr;
 
-    public Report(String start) {
+    private final ArrayList<String> question;
+    private final ArrayList<String> answer;
+    private final ArrayList<String> qStart;
+    private final ArrayList<String> qFinish;
+
+    public Report(String start, String location) {
         this.start = start;
-        cpr = "No";
+        this.location = location;
+        finish = "Unfinished";
+        question = new ArrayList<>();
+        answer = new ArrayList<>();
+        qStart = new ArrayList<>();
+        qFinish = new ArrayList<>();
+    }
+
+    public void addQuestionData(String question, String answer, String start, String finish){
+        this.question.add(question);
+        this.answer.add(answer);
+        this.qStart.add(start);
+        this.qFinish.add(finish);
+        update();
+    }
+
+    private void update() {
+        setChanged();
+        notifyObservers();
     }
 
     public String getStart() {
         return start;
-    }
-
-    public void setStart(String start) {
-        this.start = start;
     }
 
     public String getLocation() {
@@ -34,45 +51,6 @@ public class Report implements Parcelable {
         this.location = location;
     }
 
-    public String getSafe() {
-        return safe;
-    }
-
-    public void setSafe(String safe) {
-        this.safe = safe;
-    }
-
-    public String getDanger() {
-        return danger;
-    }
-
-    public void setDanger(String danger) {
-        this.danger = danger;
-    }
-
-    public String getResponsive() {
-        return responsive;
-    }
-
-    public void setResponsive(String responsive) {
-        this.responsive = responsive;
-    }
-
-    public String getBleed() {
-        return bleed;
-    }
-
-    public void setBleed(String bleed) {
-        this.bleed = bleed;
-    }
-
-    public String getCpr() {
-        return cpr;
-    }
-
-    public void setCpr(String cpr) {
-        this.cpr = cpr;
-    }
 
     public String getFinish() {
         return finish;
@@ -82,15 +60,30 @@ public class Report implements Parcelable {
         this.finish = finish;
     }
 
-    protected Report(Parcel in) {
+    public ArrayList<String> getQuestion() {
+        return question;
+    }
+
+    public ArrayList<String> getAnswer() {
+        return answer;
+    }
+
+    public ArrayList<String> getqStart() {
+        return qStart;
+    }
+
+    public ArrayList<String> getqFinish() {
+        return qFinish;
+    }
+
+    private Report(Parcel in) {
         start = in.readString();
         finish = in.readString();
         location = in.readString();
-        safe = in.readString();
-        danger = in.readString();
-        responsive = in.readString();
-        bleed = in.readString();
-        cpr = in.readString();
+        question = in.createStringArrayList();
+        answer = in.createStringArrayList();
+        qStart = in.createStringArrayList();
+        qFinish = in.createStringArrayList();
     }
 
     @Override
@@ -98,11 +91,10 @@ public class Report implements Parcelable {
         dest.writeString(start);
         dest.writeString(finish);
         dest.writeString(location);
-        dest.writeString(safe);
-        dest.writeString(danger);
-        dest.writeString(responsive);
-        dest.writeString(bleed);
-        dest.writeString(cpr);
+        dest.writeStringList(question);
+        dest.writeStringList(answer);
+        dest.writeStringList(qStart);
+        dest.writeStringList(qFinish);
     }
 
     @Override

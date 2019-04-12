@@ -3,7 +3,7 @@ package com.example.firstaid.model;
 import com.example.firstaid.R;
 
 public class Protocol {
-    private Page[] pages;
+    private final Page[] pages;
 
     public Protocol() {
         pages = new Page[11];
@@ -14,17 +14,17 @@ public class Protocol {
 
         pages[1] = new Page(R.string.page1,
                 new Choice(R.string.page1_choice1, 2),
-                new Choice(R.string.page1_choice2, 3));
+                new Choice(R.string.page1_choice2, 9));
 
         pages[2] = new Page(R.string.page2,
                 new Choice(R.string.page2_choice1, 3),
-                new Choice(R.string.page2_choice2, 3));
+                new Choice(R.string.page2_choice2, 4));
 
-        pages[3] = new Page(R.string.page3,
-                new Choice(R.string.page3_choice1, 4),
-                new Choice(R.string.page3_choice2, 5));
+        pages[3] = new Page(R.string.page3);
 
-        pages[4] = new Page(R.string.page4);
+        pages[4] = new Page(R.string.page4,
+                new Choice(R.string.page4_choice1, 5),
+                new Choice(R.string.page4_choice2, 5));
 
         pages[5] = new Page(R.string.page5);
 
@@ -34,10 +34,6 @@ public class Protocol {
                 new Choice(R.string.done_button_text, 8));
 
         pages[8] = new Page(R.string.page8);
-
-        pages[9] = new Page(R.string.page9,
-                new Choice(R.string.page9_choice1, 8),
-                new Choice(R.string.page9_choice2, 8));
     }
 
     public Page getPage(int pageNumber) {

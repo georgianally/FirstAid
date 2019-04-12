@@ -1,8 +1,8 @@
 package com.example.firstaid.model;
 
 public class Choice {
-    private int textId; //text on button
-    private int nextPage; //which page to go to when clicking button
+    private final int textId; //text on button
+    private final int nextPage; //which page to go to when clicking button
 
     public Choice(int textId, int nextPage) {
         this.textId = textId;

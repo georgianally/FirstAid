@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.TimerActivity">
 
+    <com.example.firstaid.model.Header
+        android:id="@+id/headerlayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></com.example.firstaid.model.Header>
+
     <TextView
         android:id="@+id/timerTextView"
         android:layout_width="0dp"
@@ -17,14 +26,14 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:text="Press Start for 10 Second Timer"
+        android:text="Check Breathing\n\nPress Start for 10 Second Timer"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/startButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/headerlayout" />
 
     <Button
         android:id="@+id/startButton"
@@ -52,14 +61,16 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/btn_rounded_red"
         android:padding="10dp"
-        android:text="1, 2, 3 BREATHS"
+        android:text="0-1 BREATHS"
         android:textAllCaps="false"
         android:textColor="@color/buttonTextColour"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/skipButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/guideline" />
+        app:layout_constraintRight_toLeftOf="@+id/guideline"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="4dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -77,14 +88,16 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/btn_rounded_red"
         android:padding="10dp"
-        android:text="4+ BREATHS"
+        android:text="2+ BREATHS"
         android:textAllCaps="false"
         android:textColor="@color/buttonTextColour"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/skipButton"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/guideline"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="25dp" />
 
     <Button
         android:id="@+id/skipButton"
@@ -94,7 +107,7 @@
         android:layout_marginLeft="25dp"
         android:layout_marginEnd="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/btn_rounded_yellow"
         android:text="Skip"
         android:textColor="@color/buttonTextColour"

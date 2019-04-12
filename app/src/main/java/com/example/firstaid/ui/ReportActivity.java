@@ -2,111 +2,84 @@ package com.example.firstaid.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.firstaid.R;
-import com.example.firstaid.model.DBHelper;
+import com.example.firstaid.model.Header;
 import com.example.firstaid.model.Report;
+import com.example.firstaid.model.SQLiteHelper;
+
+import es.dmoral.toasty.Toasty;
 
 public class ReportActivity extends AppCompatActivity {
 
-    private TextView startTextView;
-    private TextView finishTextView;
-    private TextView locationTextView;
-    private TextView safeTextView;
-    private TextView dangerTextView;
-    private TextView responsiveTextView;
-    private TextView bleedTextView;
-    private TextView cprTextView;
-
-    private Button saveButton;
-    private Button viewReportsButton;
-
-    Report report;
-    private DBHelper mydb;
+    private Report report;
+    private SQLiteHelper mydb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
+        Header header = findViewById(R.id.headerlayout);
+        header.initHeader();
+
+        header.callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReportActivity.this, QuickCallActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        header.logoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReportActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
         report = getIntent().getExtras().getParcelable("Report");
 
-        mydb = new DBHelper(this);
+        mydb = new SQLiteHelper(this);
 
-        startTextView = (TextView)findViewById(R.id.startTextView);
-        finishTextView = (TextView)findViewById(R.id.finishTextView);
-        locationTextView = (TextView)findViewById(R.id.locationTextView);
-        safeTextView = (TextView)findViewById(R.id.safeTextView);
-        dangerTextView = (TextView)findViewById(R.id.dangerTextView);
-        responsiveTextView = (TextView)findViewById(R.id.responsiveTextView);
-        bleedTextView = (TextView)findViewById(R.id.bleedTextView);
-        cprTextView = (TextView)findViewById(R.id.cprTextView);
+        TextView startTextView = findViewById(R.id.startTextView);
+        TextView finishTextView = findViewById(R.id.finishTextView);
+        TextView locationTextView = findViewById(R.id.locationTextView);
 
-        saveButton = (Button)findViewById(R.id.saveButton);
-        viewReportsButton = (Button)findViewById(R.id.viewReportsButton);
+        ListView questionDataListView = findViewById(R.id.questionDataListView);
 
+        Button saveButton = findViewById(R.id.saveButton);
+        Button viewReportsButton = findViewById(R.id.viewReportsButton);
 
         startTextView.setText(startTextView.getText() + report.getStart());
         finishTextView.setText(finishTextView.getText() + report.getFinish());
-        locationTextView.setText(locationTextView.getText() + report.getLocation());
-        safeTextView.setText(safeTextView.getText() + report.getSafe());
-        dangerTextView.setText(dangerTextView.getText() + report.getDanger());
-        responsiveTextView.setText(responsiveTextView.getText() + report.getResponsive());
-        bleedTextView.setText(bleedTextView.getText() + report.getBleed());
-        cprTextView.setText(cprTextView.getText() + report.getCpr());
+        locationTextView.setText(locationTextView.getText() + report.getLocation() + "\n");
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+
+        for(int i = 0; i < report.getQuestion().size(); i++) {
+            adapter.add(report.getQuestion().get(i) + "\n" + report.getAnswer().get(i) + "\n" + report.getqStart().get(i) + "\n" + report.getqFinish().get(i) + "\n");
+        }
+
+        questionDataListView.setAdapter(adapter);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LayoutInflater li = LayoutInflater.from(ReportActivity.this);
-                View promptsView = li.inflate(R.layout.prompts, null);
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        ReportActivity.this);
-
-                // set prompts.xml to alertdialog builder
-                alertDialogBuilder.setView(promptsView);
-
-                final EditText userInput = (EditText) promptsView
-                        .findViewById(R.id.editTextDialogUserInput);
-
-                // set dialog message
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("Save",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        mydb.insertLocation(userInput.getText().toString(),
-                                                report.getStart(),
-                                                report.getFinish(),
-                                                report.getLocation(),
-                                                report.getSafe(),
-                                                report.getDanger(),
-                                                report.getResponsive(),
-                                                report.getBleed(),
-                                                report.getCpr());
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // show it
-                alertDialog.show();
+                saveReport();
             }
         });
 
@@ -117,5 +90,59 @@ public class ReportActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void saveReport() {
+        LayoutInflater li = LayoutInflater.from(ReportActivity.this);
+        View promptsView = li.inflate(R.layout.prompts, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                ReportActivity.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Save",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                String query = "Select * From reportData where name = '"+userInput.getText().toString()+"'";
+                                if(mydb.getDataQuery(query).getCount()>0) {
+                                    Toasty.warning(ReportActivity.this, "Name of Report Already Exists \n Report not Saved!", Toast.LENGTH_LONG, true).show();
+                                    saveReport();
+                                } else {
+                                    mydb.insertLocation(mydb.getWritableDatabase(), userInput.getText().toString(),
+                                            report.getStart(),
+                                            report.getFinish(),
+                                            report.getLocation());
+
+                                    for (int i = 0; i < report.getQuestion().size(); i++) {
+                                        mydb.insertQuestion(mydb.getWritableDatabase(), userInput.getText().toString(),
+                                                report.getQuestion().get(i),
+                                                report.getAnswer().get(i),
+                                                report.getqStart().get(i),
+                                                report.getqFinish().get(i));
+                                    }
+                                    Toasty.success(ReportActivity.this, "Report Saved", Toast.LENGTH_SHORT, true).show();
+                                    }
+                                }
+                            })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }
