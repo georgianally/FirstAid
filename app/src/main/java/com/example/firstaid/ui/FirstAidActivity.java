@@ -237,7 +237,6 @@ public class FirstAidActivity extends AppCompatActivity implements Observer {
         choice2Button.setText(R.string.done_button_text);
     }
 
-    //Refactor and simplify? Looping page 7 UI
     private void headCheckPageUI(final Page page) {
         final String[] headToeCheck = {"Head", "Body", "Upper Legs", "Lower Legs", "Arms"};
         final int[] i = {-1};
@@ -300,22 +299,20 @@ public class FirstAidActivity extends AppCompatActivity implements Observer {
 
     private void reportSetup() {
         //Report
-        TextView startTextView = findViewById(R.id.startTextView);
-        TextView locationTextView = findViewById(R.id.locationTextView);
         ListView questionDataListView = findViewById(R.id.questionDataListView);
-
-        startTextView.setText(startTextView.getText() + report.getStart());
-        locationTextView.setText(locationTextView.getText() + report.getLocation());
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         questionDataListView.setAdapter(adapter);
+        adapter.add("Start \n" + report.getStart() + "\n");
+        adapter.add("\nFinish \n" + report.getFinish() + "\n");
+        adapter.add("\nLocation \n" + report.getLocation() + "\n");
     }
 
     @Override
     public void update(Observable o, Object arg) {
         Report reportNew = (Report) o;
         int size = reportNew.getQuestion().size()-1;
-        adapter.add(reportNew.getQuestion().get(size) + "\n" + reportNew.getAnswer().get(size) + "\n" + reportNew.getqStart().get(size) + "\n" + reportNew.getqFinish().get(size) + "\n");
+        adapter.add("\n" + reportNew.getQuestion().get(size) + "\n" + reportNew.getAnswer().get(size) + "\n" + reportNew.getqStart().get(size) + "\n" + reportNew.getqFinish().get(size) + "\n");
         adapter.notifyDataSetChanged();
     }
 }

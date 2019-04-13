@@ -54,24 +54,19 @@ public class ReportActivity extends AppCompatActivity {
 
         mydb = new SQLiteHelper(this);
 
-        TextView startTextView = findViewById(R.id.startTextView);
-        TextView finishTextView = findViewById(R.id.finishTextView);
-        TextView locationTextView = findViewById(R.id.locationTextView);
-
         ListView questionDataListView = findViewById(R.id.questionDataListView);
 
         Button saveButton = findViewById(R.id.saveButton);
         Button viewReportsButton = findViewById(R.id.viewReportsButton);
 
-        startTextView.setText(startTextView.getText() + report.getStart());
-        finishTextView.setText(finishTextView.getText() + report.getFinish());
-        locationTextView.setText(locationTextView.getText() + report.getLocation() + "\n");
-
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
+        adapter.add("Start \n" + report.getStart() + "\n");
+        adapter.add("\nFinish \n" + report.getFinish() + "\n");
+        adapter.add("\nLocation \n" + report.getLocation() + "\n");
+
         for(int i = 0; i < report.getQuestion().size(); i++) {
-            adapter.add(report.getQuestion().get(i) + "\n" + report.getAnswer().get(i) + "\n" + report.getqStart().get(i) + "\n" + report.getqFinish().get(i) + "\n");
+            adapter.add("\n" + report.getQuestion().get(i) + "\n" + report.getAnswer().get(i) + "\n" + report.getqStart().get(i) + "\n" + report.getqFinish().get(i) + "\n");
         }
 
         questionDataListView.setAdapter(adapter);
