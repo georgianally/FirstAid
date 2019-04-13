@@ -158,6 +158,15 @@ public class FirstAidActivity extends AppCompatActivity implements Observer {
             startReportActivity();
             progressBar.setVisibility(View.VISIBLE);
         }
+        else if(pageNumber == 6){
+            singlePageUI();
+            choice2Button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view){
+                    loadPage(5);
+                }
+            });
+        }
         else if (page.isSingleButton() && pageNumber != 7) {
             singlePageUI();
             choice2Button.setOnClickListener(new View.OnClickListener() {
