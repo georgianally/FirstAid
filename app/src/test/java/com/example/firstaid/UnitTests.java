@@ -13,12 +13,38 @@ import static org.junit.Assert.*;
 
 public class UnitTests {
     @Test
-    public void report_isCreated() throws Exception {
+    public void report_isCreated() {
         Date currentTime = Calendar.getInstance().getTime();
         String location = "Test Location";
         Report report = new Report(currentTime.toString(), location);
 
         assertEquals("Test Location", report.getLocation());
+    }
+
+    @Test
+    public void startTime_isStored() {
+        Date currentTime = Calendar.getInstance().getTime();
+        String location = "Test Location";
+        Report report = new Report(currentTime.toString(), location);
+
+        assertEquals(currentTime.toString(), report.getStart());
+    }
+
+    @Test
+    public void question_isStored(){
+        Date currentTime = Calendar.getInstance().getTime();
+        String location = "Test Location";
+        Report report = new Report(currentTime.toString(), location);
+
+
+        String question = "Name?";
+        String answer = "Georgia";
+        String start = "10:55";
+        String finish = "10:56";
+
+        report.addQuestionData(question, answer, start, finish);
+
+        assertEquals("Name?", report.getQuestion().get(0));
     }
 
     @Test
@@ -36,6 +62,40 @@ public class UnitTests {
         report.addQuestionData(question, answer, start, finish);
 
         assertEquals("Georgia", report.getAnswer().get(0));
+    }
+
+    @Test
+    public void start_isStored(){
+        Date currentTime = Calendar.getInstance().getTime();
+        String location = "Test Location";
+        Report report = new Report(currentTime.toString(), location);
+
+
+        String question = "Name?";
+        String answer = "Georgia";
+        String start = "10:55";
+        String finish = "10:56";
+
+        report.addQuestionData(question, answer, start, finish);
+
+        assertEquals("10:55", report.getqStart().get(0));
+    }
+
+    @Test
+    public void finish_isStored(){
+        Date currentTime = Calendar.getInstance().getTime();
+        String location = "Test Location";
+        Report report = new Report(currentTime.toString(), location);
+
+
+        String question = "Name?";
+        String answer = "Georgia";
+        String start = "10:55";
+        String finish = "10:56";
+
+        report.addQuestionData(question, answer, start, finish);
+
+        assertEquals("10:56", report.getqFinish().get(0));
     }
 
     @Test
@@ -61,7 +121,7 @@ public class UnitTests {
     }
 
     @Test
-    public void firstPage_isReturned() throws Exception {
+    public void firstPage_isReturned() {
         Protocol protocol = new Protocol();
         Page page = protocol.getPage(0);
 
@@ -69,10 +129,18 @@ public class UnitTests {
     }
 
     @Test
-    public void singleButton_isTrue() throws Exception {
+    public void singleButton_isTrue() {
         Protocol protocol = new Protocol();
         Page page = protocol.getPage(3);
 
         assertTrue(page.isSingleButton());
+    }
+
+    @Test
+    public void singleButton_isFalse() {
+        Protocol protocol = new Protocol();
+        Page page = protocol.getPage(0);
+
+        assertTrue(!page.isSingleButton());
     }
 }

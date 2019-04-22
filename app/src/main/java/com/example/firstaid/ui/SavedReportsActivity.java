@@ -24,8 +24,6 @@ import es.dmoral.toasty.Toasty;
 
 public class SavedReportsActivity extends AppCompatActivity {
 
-    private ListView locationList;
-    private Button deleteAllButton;
     private ArrayList<String> locationData;
 
     private SQLiteHelper mydb;
@@ -59,8 +57,8 @@ public class SavedReportsActivity extends AppCompatActivity {
             mydb.dummyData(mydb.getWritableDatabase());
         }
 
-        locationList = findViewById(R.id.locationsListView);
-        deleteAllButton = findViewById(R.id.deleteAllButton);
+        ListView locationList = findViewById(R.id.locationsListView);
+        Button deleteAllButton = findViewById(R.id.deleteAllButton);
         locationData = new ArrayList<>();
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locationData);

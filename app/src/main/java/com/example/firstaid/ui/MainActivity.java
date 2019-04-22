@@ -23,12 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     private String address = "No GPS Found";
 
-    private LocationManager locationManager;
-    private static double lat;
-    private static double lng;
-    private Geocoder geocoder;
-    private List<Address> addresses;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +56,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getLocation() {
-        geocoder = new Geocoder(this, Locale.getDefault());
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         try {
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double lat;
+            double lng;
+            List<Address> addresses;
             if(location != null) {
                 lat = location.getLatitude();
                 lng = location.getLongitude();

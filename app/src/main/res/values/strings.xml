@@ -31,4 +31,26 @@
 
     <string name="done_button_text">Done</string>
     <string name="title_activity_quick_call">Map</string>
+    <string name="view_report">View Report</string>
+    <string name="skip">Skip</string>
+    <string name="start">Start</string>
+    <string name="view_reports">View Reports</string>
+    <string name="logo">logo</string>
+    <string name="call_999">Call 999</string>
+    <string name="voice_input">Voice Input</string>
+    <string name="name">Name</string>
+    <string name="next_question">Next Question</string>
+    <string name="speech_to_text_translation">Speech to text translation:</string>
+    <string name="location">Location:</string>
+    <string name="guide_start">Guide Start:</string>
+    <string name="save_report">Save Report</string>
+    <string name="incident_report">Incident Report</string>
+    <string name="saved_reports">Saved Reports</string>
+    <string name="delete_all">Delete All</string>
+    <string name="check_breathing">Check Breathing  Press Start for 10 Second Timer</string>
+    <string name="_0_1_breaths">0-1 BREATHS</string>
+    <string name="_2_breaths">2+ BREATHS</string>
+    <string name="home">Home</string>
+    <string name="name_your_report">Name Your Report :</string>
+    <string name="report_name">Report Name</string>
 </resources>

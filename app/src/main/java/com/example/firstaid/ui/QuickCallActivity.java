@@ -29,13 +29,9 @@ import java.util.Locale;
 public class QuickCallActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private LocationManager locationManager;
-    private static double lat;
-    private static double lng;
     private Geocoder geocoder;
-    private List<Address> addresses;
 
     private TextView addressTextView;
-    private Button call999Button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +51,7 @@ public class QuickCallActivity extends FragmentActivity implements OnMapReadyCal
         });
 
         addressTextView = findViewById(R.id.addressTextView);
-        call999Button = findViewById(R.id.call999Button);
+        Button call999Button = findViewById(R.id.call999Button);
 
         geocoder = new Geocoder(this, Locale.getDefault());
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -76,15 +72,17 @@ public class QuickCallActivity extends FragmentActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         String address;
-        GoogleMap mMap = googleMap;
         try {
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double lat;
+            double lng;
+            List<Address> addresses;
             if(location != null) {
                 lat = location.getLatitude();
                 lng = location.getLongitude();
                 LatLng currentLocation = new LatLng(lat, lng);
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 17));
+                googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 17));
 
                 addresses = geocoder.getFromLocation(lat, lng, 1);
                  address = addresses.get(0).getAddressLine(0);
@@ -92,8 +90,8 @@ public class QuickCallActivity extends FragmentActivity implements OnMapReadyCal
                 lat = 51.279643;
                 lng = 1.089364;
                 LatLng currentLocation = new LatLng(lat, lng);
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 17));
+                googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 17));
 
                 addresses = geocoder.getFromLocation(lat, lng, 1);
                 address = addresses.get(0).getAddressLine(0);

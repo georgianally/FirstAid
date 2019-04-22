@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></com.example.firstaid.model.Header>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -55,7 +55,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/btn_rounded_green"
-        android:text="Call 999"
+        android:text="@string/call_999"
         android:textColor="@color/buttonTextColour"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

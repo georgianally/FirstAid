@@ -17,7 +17,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></com.example.firstaid.model.Header>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/viewReportsButton"
@@ -29,7 +29,7 @@
             android:layout_marginRight="25dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/btn_rounded_yellow"
-            android:text="View Saved Reports"
+            android:text="@string/view_reports"
             android:textColor="@color/buttonTextColour"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -46,7 +46,7 @@
             android:layout_marginRight="25dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/btn_rounded_green"
-            android:text="Save Report"
+            android:text="@string/save_report"
             android:textColor="@color/buttonTextColour"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/viewReportsButton"
@@ -80,7 +80,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="Incident Report"
+            android:text="@string/incident_report"
             android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

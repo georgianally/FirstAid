@@ -10,7 +10,7 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name Your Report : "
+        android:text="@string/name_your_report"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -18,7 +18,7 @@
         android:id="@+id/editTextDialogUserInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Report Name">
+        android:hint="@string/report_name">
         <requestFocus />
 
     </EditText>

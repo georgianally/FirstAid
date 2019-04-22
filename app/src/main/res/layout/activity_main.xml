@@ -17,7 +17,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/btn_rounded_green"
         android:gravity="center"
-        android:text="Start"
+        android:text="@string/start"
         android:textColor="@color/buttonTextColour"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/viewReportsButton"
@@ -35,7 +35,7 @@
         android:layout_marginRight="25dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/btn_rounded_yellow"
-        android:text="View Reports"
+        android:text="@string/view_reports"
         android:textColor="@color/buttonTextColour"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +45,7 @@
 
     <ImageView
         android:id="@+id/titleImageView"
-        android:contentDescription="logo"
+        android:contentDescription="@string/logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
