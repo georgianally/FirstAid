@@ -7,4 +7,4 @@ While using the First Aid app, users complete a guide by answering questions and
 
 MVC, observer pattern, an SQLite database, speech to text and other features were included for a fully functioning application.
 
-![image](https://github.com/georgianally/FirstAid/blob/master/Capture2.PNG)
+![image](https://github.com/georgianally/FirstAid/blob/master/Capture2.png)
